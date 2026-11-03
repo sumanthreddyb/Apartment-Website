@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: apartmenthub
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-apartmenthub}
+      POSTGRES_DB: apartmenthub
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apartmenthub -d apartmenthub"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+  db-migrate:
+    build:
+      context: .
+      target: builder
+    command: ["npm", "run", "db:migrate"]
+    restart: "no"
+    environment:
+      DATABASE_URL: postgres://apartmenthub:${POSTGRES_PASSWORD:-apartmenthub}@db:5432/apartmenthub
+    depends_on:
+      db:
+        condition: service_healthy
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://apartmenthub:${POSTGRES_PASSWORD:-apartmenthub}@db:5432/apartmenthub
+      AUTH_SECRET: ${AUTH_SECRET:?Set a strong AUTH_SECRET in .env}
+      AUTH_URL: ${AUTH_URL:-http://localhost:3000}
+      DEMO_MODE: ${DEMO_MODE:-true}
+      SMTP_URL: ${SMTP_URL:-}
+      SMTP_FROM: ${SMTP_FROM:-ApartmentHub <no-reply@localhost>}
+      UPLOAD_DIR: /app/data/uploads
+    depends_on:
+      db-migrate:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data/uploads:/app/data/uploads
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    profiles: ["proxy"]
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:

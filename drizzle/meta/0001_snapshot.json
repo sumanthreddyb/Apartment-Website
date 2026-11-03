@@ -1,0 +1,2996 @@
+{
+  "id": "a1475946-31b0-4608-a9f6-dd0477101194",
+  "prevId": "fa73c8b3-997d-48cc-8fec-e769109dea35",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.accounts": {
+      "name": "accounts",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider": {
+          "name": "provider",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_account_id": {
+          "name": "provider_account_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_type": {
+          "name": "token_type",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_token": {
+          "name": "id_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "session_state": {
+          "name": "session_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "accounts_user_id_users_id_fk": {
+          "name": "accounts_user_id_users_id_fk",
+          "tableFrom": "accounts",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "accounts_provider_provider_account_id_pk": {
+          "name": "accounts_provider_provider_account_id_pk",
+          "columns": [
+            "provider",
+            "provider_account_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.apartments": {
+      "name": "apartments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(160)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "city": {
+          "name": "city",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Bengaluru'"
+        },
+        "timezone": {
+          "name": "timezone",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Asia/Kolkata'"
+        },
+        "currency": {
+          "name": "currency",
+          "type": "varchar(3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'INR'"
+        },
+        "settings": {
+          "name": "settings",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "apartments_slug_unique": {
+          "name": "apartments_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.asset_maintenance": {
+      "name": "asset_maintenance",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "asset_id": {
+          "name": "asset_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vendor_id": {
+          "name": "vendor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cost_paise": {
+          "name": "cost_paise",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "next_due_at": {
+          "name": "next_due_at",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "asset_maintenance_apartment_id_apartments_id_fk": {
+          "name": "asset_maintenance_apartment_id_apartments_id_fk",
+          "tableFrom": "asset_maintenance",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "asset_maintenance_asset_id_assets_id_fk": {
+          "name": "asset_maintenance_asset_id_assets_id_fk",
+          "tableFrom": "asset_maintenance",
+          "tableTo": "assets",
+          "columnsFrom": [
+            "asset_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "asset_maintenance_vendor_id_vendors_id_fk": {
+          "name": "asset_maintenance_vendor_id_vendors_id_fk",
+          "tableFrom": "asset_maintenance",
+          "tableTo": "vendors",
+          "columnsFrom": [
+            "vendor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.assets": {
+      "name": "assets",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(160)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location": {
+          "name": "location",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "serial_number": {
+          "name": "serial_number",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "installed_on": {
+          "name": "installed_on",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "warranty_until": {
+          "name": "warranty_until",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "service_interval_days": {
+          "name": "service_interval_days",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "next_service_at": {
+          "name": "next_service_at",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(24)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "assets_apartment_id_apartments_id_fk": {
+          "name": "assets_apartment_id_apartments_id_fk",
+          "tableFrom": "assets",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.audit_log": {
+      "name": "audit_log",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actor_id": {
+          "name": "actor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "action": {
+          "name": "action",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "entity": {
+          "name": "entity",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "entity_id": {
+          "name": "entity_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "audit_log_apartment_id_apartments_id_fk": {
+          "name": "audit_log_apartment_id_apartments_id_fk",
+          "tableFrom": "audit_log",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "audit_log_actor_id_users_id_fk": {
+          "name": "audit_log_actor_id_users_id_fk",
+          "tableFrom": "audit_log",
+          "tableTo": "users",
+          "columnsFrom": [
+            "actor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.bookings": {
+      "name": "bookings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "facility_id": {
+          "name": "facility_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "requested_by": {
+          "name": "requested_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "starts_at": {
+          "name": "starts_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ends_at": {
+          "name": "ends_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "booking_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "purpose": {
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "bookings_apartment_id_apartments_id_fk": {
+          "name": "bookings_apartment_id_apartments_id_fk",
+          "tableFrom": "bookings",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "bookings_facility_id_facilities_id_fk": {
+          "name": "bookings_facility_id_facilities_id_fk",
+          "tableFrom": "bookings",
+          "tableTo": "facilities",
+          "columnsFrom": [
+            "facility_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "bookings_requested_by_users_id_fk": {
+          "name": "bookings_requested_by_users_id_fk",
+          "tableFrom": "bookings",
+          "tableTo": "users",
+          "columnsFrom": [
+            "requested_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.buildings": {
+      "name": "buildings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "floors": {
+          "name": "floors",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "buildings_apartment_id_apartments_id_fk": {
+          "name": "buildings_apartment_id_apartments_id_fk",
+          "tableFrom": "buildings",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.business_listings": {
+      "name": "business_listings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "business_name": {
+          "name": "business_name",
+          "type": "varchar(160)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone": {
+          "name": "phone",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "approved_at": {
+          "name": "approved_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "business_listings_apartment_id_apartments_id_fk": {
+          "name": "business_listings_apartment_id_apartments_id_fk",
+          "tableFrom": "business_listings",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "business_listings_user_id_users_id_fk": {
+          "name": "business_listings_user_id_users_id_fk",
+          "tableFrom": "business_listings",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.documents": {
+      "name": "documents",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "uploaded_by": {
+          "name": "uploaded_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "flat_id": {
+          "name": "flat_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "storage_key": {
+          "name": "storage_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "visibility": {
+          "name": "visibility",
+          "type": "varchar(24)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'apartment'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "documents_apartment_id_apartments_id_fk": {
+          "name": "documents_apartment_id_apartments_id_fk",
+          "tableFrom": "documents",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "documents_uploaded_by_users_id_fk": {
+          "name": "documents_uploaded_by_users_id_fk",
+          "tableFrom": "documents",
+          "tableTo": "users",
+          "columnsFrom": [
+            "uploaded_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "documents_flat_id_flats_id_fk": {
+          "name": "documents_flat_id_flats_id_fk",
+          "tableFrom": "documents",
+          "tableTo": "flats",
+          "columnsFrom": [
+            "flat_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.events": {
+      "name": "events",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "starts_at": {
+          "name": "starts_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location": {
+          "name": "location",
+          "type": "varchar(140)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "events_apartment_id_apartments_id_fk": {
+          "name": "events_apartment_id_apartments_id_fk",
+          "tableFrom": "events",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "events_created_by_users_id_fk": {
+          "name": "events_created_by_users_id_fk",
+          "tableFrom": "events",
+          "tableTo": "users",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.expenses": {
+      "name": "expenses",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vendor_id": {
+          "name": "vendor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recorded_by": {
+          "name": "recorded_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount_paise": {
+          "name": "amount_paise",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "incurred_on": {
+          "name": "incurred_on",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "receipt_path": {
+          "name": "receipt_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "expenses_apartment_id_apartments_id_fk": {
+          "name": "expenses_apartment_id_apartments_id_fk",
+          "tableFrom": "expenses",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "expenses_vendor_id_vendors_id_fk": {
+          "name": "expenses_vendor_id_vendors_id_fk",
+          "tableFrom": "expenses",
+          "tableTo": "vendors",
+          "columnsFrom": [
+            "vendor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "expenses_recorded_by_users_id_fk": {
+          "name": "expenses_recorded_by_users_id_fk",
+          "tableFrom": "expenses",
+          "tableTo": "users",
+          "columnsFrom": [
+            "recorded_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.facilities": {
+      "name": "facilities",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "booking_enabled": {
+          "name": "booking_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "capacity": {
+          "name": "capacity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hourly_rate_paise": {
+          "name": "hourly_rate_paise",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "rules": {
+          "name": "rules",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "facilities_apartment_id_apartments_id_fk": {
+          "name": "facilities_apartment_id_apartments_id_fk",
+          "tableFrom": "facilities",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.flats": {
+      "name": "flats",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "building_id": {
+          "name": "building_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "number": {
+          "name": "number",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "floor": {
+          "name": "floor",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "area_sqft": {
+          "name": "area_sqft",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parking_label": {
+          "name": "parking_label",
+          "type": "varchar(40)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "occupied": {
+          "name": "occupied",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {
+        "flat_apartment_number_idx": {
+          "name": "flat_apartment_number_idx",
+          "columns": [
+            {
+              "expression": "apartment_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "flats_apartment_id_apartments_id_fk": {
+          "name": "flats_apartment_id_apartments_id_fk",
+          "tableFrom": "flats",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "flats_building_id_buildings_id_fk": {
+          "name": "flats_building_id_buildings_id_fk",
+          "tableFrom": "flats",
+          "tableTo": "buildings",
+          "columnsFrom": [
+            "building_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.group_buying_orders": {
+      "name": "group_buying_orders",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "group_buying_id": {
+          "name": "group_buying_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "flat_id": {
+          "name": "flat_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'reserved'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "group_buying_orders_apartment_id_apartments_id_fk": {
+          "name": "group_buying_orders_apartment_id_apartments_id_fk",
+          "tableFrom": "group_buying_orders",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "group_buying_orders_group_buying_id_group_buyings_id_fk": {
+          "name": "group_buying_orders_group_buying_id_group_buyings_id_fk",
+          "tableFrom": "group_buying_orders",
+          "tableTo": "group_buyings",
+          "columnsFrom": [
+            "group_buying_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "group_buying_orders_user_id_users_id_fk": {
+          "name": "group_buying_orders_user_id_users_id_fk",
+          "tableFrom": "group_buying_orders",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "group_buying_orders_flat_id_flats_id_fk": {
+          "name": "group_buying_orders_flat_id_flats_id_fk",
+          "tableFrom": "group_buying_orders",
+          "tableTo": "flats",
+          "columnsFrom": [
+            "flat_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.group_buyings": {
+      "name": "group_buyings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "price_paise": {
+          "name": "price_paise",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "minimum_quantity": {
+          "name": "minimum_quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "closes_at": {
+          "name": "closes_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "delivery_at": {
+          "name": "delivery_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "group_buyings_apartment_id_apartments_id_fk": {
+          "name": "group_buyings_apartment_id_apartments_id_fk",
+          "tableFrom": "group_buyings",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "group_buyings_created_by_users_id_fk": {
+          "name": "group_buyings_created_by_users_id_fk",
+          "tableFrom": "group_buyings",
+          "tableTo": "users",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.invoices": {
+      "name": "invoices",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "flat_id": {
+          "name": "flat_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "period": {
+          "name": "period",
+          "type": "varchar(7)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount_paise": {
+          "name": "amount_paise",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "due_date": {
+          "name": "due_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'unpaid'"
+        },
+        "paid_at": {
+          "name": "paid_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "invoice_flat_period_idx": {
+          "name": "invoice_flat_period_idx",
+          "columns": [
+            {
+              "expression": "flat_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "period",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "invoices_apartment_id_apartments_id_fk": {
+          "name": "invoices_apartment_id_apartments_id_fk",
+          "tableFrom": "invoices",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "invoices_flat_id_flats_id_fk": {
+          "name": "invoices_flat_id_flats_id_fk",
+          "tableFrom": "invoices",
+          "tableTo": "flats",
+          "columnsFrom": [
+            "flat_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.memberships": {
+      "name": "memberships",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "membership_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "flat_id": {
+          "name": "flat_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "membership_apartment_user_idx": {
+          "name": "membership_apartment_user_idx",
+          "columns": [
+            {
+              "expression": "apartment_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "memberships_apartment_id_apartments_id_fk": {
+          "name": "memberships_apartment_id_apartments_id_fk",
+          "tableFrom": "memberships",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "memberships_user_id_users_id_fk": {
+          "name": "memberships_user_id_users_id_fk",
+          "tableFrom": "memberships",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "memberships_flat_id_flats_id_fk": {
+          "name": "memberships_flat_id_flats_id_fk",
+          "tableFrom": "memberships",
+          "tableTo": "flats",
+          "columnsFrom": [
+            "flat_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.notices": {
+      "name": "notices",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "author_id": {
+          "name": "author_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pinned": {
+          "name": "pinned",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "notices_apartment_id_apartments_id_fk": {
+          "name": "notices_apartment_id_apartments_id_fk",
+          "tableFrom": "notices",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "notices_author_id_users_id_fk": {
+          "name": "notices_author_id_users_id_fk",
+          "tableFrom": "notices",
+          "tableTo": "users",
+          "columnsFrom": [
+            "author_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.notifications": {
+      "name": "notifications",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "href": {
+          "name": "href",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "read_at": {
+          "name": "read_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "notifications_apartment_id_apartments_id_fk": {
+          "name": "notifications_apartment_id_apartments_id_fk",
+          "tableFrom": "notifications",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "notifications_user_id_users_id_fk": {
+          "name": "notifications_user_id_users_id_fk",
+          "tableFrom": "notifications",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payments": {
+      "name": "payments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "invoice_id": {
+          "name": "invoice_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount_paise": {
+          "name": "amount_paise",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "method": {
+          "name": "method",
+          "type": "varchar(40)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reference": {
+          "name": "reference",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "received_by": {
+          "name": "received_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "paid_at": {
+          "name": "paid_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "receipt_path": {
+          "name": "receipt_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "payments_apartment_id_apartments_id_fk": {
+          "name": "payments_apartment_id_apartments_id_fk",
+          "tableFrom": "payments",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payments_invoice_id_invoices_id_fk": {
+          "name": "payments_invoice_id_invoices_id_fk",
+          "tableFrom": "payments",
+          "tableTo": "invoices",
+          "columnsFrom": [
+            "invoice_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "payments_received_by_users_id_fk": {
+          "name": "payments_received_by_users_id_fk",
+          "tableFrom": "payments",
+          "tableTo": "users",
+          "columnsFrom": [
+            "received_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.poll_votes": {
+      "name": "poll_votes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "poll_id": {
+          "name": "poll_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "option": {
+          "name": "option",
+          "type": "varchar(240)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "voted_at": {
+          "name": "voted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "poll_vote_user_idx": {
+          "name": "poll_vote_user_idx",
+          "columns": [
+            {
+              "expression": "poll_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "poll_votes_apartment_id_apartments_id_fk": {
+          "name": "poll_votes_apartment_id_apartments_id_fk",
+          "tableFrom": "poll_votes",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "poll_votes_poll_id_polls_id_fk": {
+          "name": "poll_votes_poll_id_polls_id_fk",
+          "tableFrom": "poll_votes",
+          "tableTo": "polls",
+          "columnsFrom": [
+            "poll_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "poll_votes_user_id_users_id_fk": {
+          "name": "poll_votes_user_id_users_id_fk",
+          "tableFrom": "poll_votes",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.polls": {
+      "name": "polls",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "question": {
+          "name": "question",
+          "type": "varchar(240)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "options": {
+          "name": "options",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "closes_at": {
+          "name": "closes_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "polls_apartment_id_apartments_id_fk": {
+          "name": "polls_apartment_id_apartments_id_fk",
+          "tableFrom": "polls",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "polls_created_by_users_id_fk": {
+          "name": "polls_created_by_users_id_fk",
+          "tableFrom": "polls",
+          "tableTo": "users",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.push_subscriptions": {
+      "name": "push_subscriptions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "endpoint": {
+          "name": "endpoint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "public_key": {
+          "name": "public_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "auth_secret": {
+          "name": "auth_secret",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "push_subscriptions_apartment_id_apartments_id_fk": {
+          "name": "push_subscriptions_apartment_id_apartments_id_fk",
+          "tableFrom": "push_subscriptions",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "push_subscriptions_user_id_users_id_fk": {
+          "name": "push_subscriptions_user_id_users_id_fk",
+          "tableFrom": "push_subscriptions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "push_subscriptions_endpoint_unique": {
+          "name": "push_subscriptions_endpoint_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "endpoint"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.requests": {
+      "name": "requests",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "flat_id": {
+          "name": "flat_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "request_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open'"
+        },
+        "priority": {
+          "name": "priority",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'normal'"
+        },
+        "assigned_to": {
+          "name": "assigned_to",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "resolved_at": {
+          "name": "resolved_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "requests_apartment_id_apartments_id_fk": {
+          "name": "requests_apartment_id_apartments_id_fk",
+          "tableFrom": "requests",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "requests_flat_id_flats_id_fk": {
+          "name": "requests_flat_id_flats_id_fk",
+          "tableFrom": "requests",
+          "tableTo": "flats",
+          "columnsFrom": [
+            "flat_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "requests_created_by_users_id_fk": {
+          "name": "requests_created_by_users_id_fk",
+          "tableFrom": "requests",
+          "tableTo": "users",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "requests_assigned_to_users_id_fk": {
+          "name": "requests_assigned_to_users_id_fk",
+          "tableFrom": "requests",
+          "tableTo": "users",
+          "columnsFrom": [
+            "assigned_to"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.role_permissions": {
+      "name": "role_permissions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "membership_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "permission": {
+          "name": "permission",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "enabled": {
+          "name": "enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {
+        "role_permission_apartment_role_key_idx": {
+          "name": "role_permission_apartment_role_key_idx",
+          "columns": [
+            {
+              "expression": "apartment_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "role",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "permission",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "role_permissions_apartment_id_apartments_id_fk": {
+          "name": "role_permissions_apartment_id_apartments_id_fk",
+          "tableFrom": "role_permissions",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.sessions": {
+      "name": "sessions",
+      "schema": "",
+      "columns": {
+        "session_token": {
+          "name": "session_token",
+          "type": "varchar(255)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "name": "expires",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "sessions_user_id_users_id_fk": {
+          "name": "sessions_user_id_users_id_fk",
+          "tableFrom": "sessions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.suggestions": {
+      "name": "suggestions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(24)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'submitted'"
+        },
+        "anonymous": {
+          "name": "anonymous",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "suggestions_apartment_id_apartments_id_fk": {
+          "name": "suggestions_apartment_id_apartments_id_fk",
+          "tableFrom": "suggestions",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "suggestions_created_by_users_id_fk": {
+          "name": "suggestions_created_by_users_id_fk",
+          "tableFrom": "suggestions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(160)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email_verified": {
+          "name": "email_verified",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.vendors": {
+      "name": "vendors",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(160)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phone": {
+          "name": "phone",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "vendors_apartment_id_apartments_id_fk": {
+          "name": "vendors_apartment_id_apartments_id_fk",
+          "tableFrom": "vendors",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.verification_tokens": {
+      "name": "verification_tokens",
+      "schema": "",
+      "columns": {
+        "identifier": {
+          "name": "identifier",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "name": "expires",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "verification_tokens_identifier_token_pk": {
+          "name": "verification_tokens_identifier_token_pk",
+          "columns": [
+            "identifier",
+            "token"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "verification_tokens_token_unique": {
+          "name": "verification_tokens_token_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "token"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.visitors": {
+      "name": "visitors",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "apartment_id": {
+          "name": "apartment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "flat_id": {
+          "name": "flat_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(160)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phone": {
+          "name": "phone",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "purpose": {
+          "name": "purpose",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "arrived_at": {
+          "name": "arrived_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "departed_at": {
+          "name": "departed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "visitors_apartment_id_apartments_id_fk": {
+          "name": "visitors_apartment_id_apartments_id_fk",
+          "tableFrom": "visitors",
+          "tableTo": "apartments",
+          "columnsFrom": [
+            "apartment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "visitors_flat_id_flats_id_fk": {
+          "name": "visitors_flat_id_flats_id_fk",
+          "tableFrom": "visitors",
+          "tableTo": "flats",
+          "columnsFrom": [
+            "flat_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.booking_status": {
+      "name": "booking_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "approved",
+        "rejected",
+        "cancelled"
+      ]
+    },
+    "public.request_status": {
+      "name": "request_status",
+      "schema": "public",
+      "values": [
+        "open",
+        "in_progress",
+        "resolved",
+        "closed"
+      ]
+    },
+    "public.membership_role": {
+      "name": "membership_role",
+      "schema": "public",
+      "values": [
+        "platform_admin",
+        "apartment_admin",
+        "treasurer",
+        "committee",
+        "facility_manager",
+        "security_guard",
+        "maintenance_staff",
+        "owner",
+        "tenant",
+        "family_member",
+        "vendor"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
